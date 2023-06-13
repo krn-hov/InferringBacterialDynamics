@@ -1,11 +1,6 @@
 import pandas as pd
 import numpy as np
-import random
 from pysr import PySRRegressor
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from scipy.ndimage import convolve
-from sympy import simplify, Symbol, series, latex
 import pickle
 
 def pickle_save(filename, data):
@@ -19,7 +14,7 @@ def pickle_load(filename):
 
 np.random.seed(25)
 
-colony_form_data, ring_form_data, plate_maximums = pickle_load("../../Pickles/Data/AC_S_PreprocessedData")
+colony_form_data, ring_form_data, plate_maximums = pickle_load("../Data/Train_Test/ACS_PreprocessedData")
 
 # training indices include horizontal and vertical midsection for total of 79 colonies
 goo = list(zip(list(np.ones(48).astype(int)*15),np.arange(48)))
@@ -52,7 +47,7 @@ training_data = training_data.iloc[::6] #every 4 for midsection, every 6 for 10%
 
 
 Nmodel = PySRRegressor(
-    equation_file = "ACS1.csv",
+    equation_file = "../Data/ModelOutputs/ACS1.csv",
     procs=32,
     early_stop_condition = 2e-09,
     timeout_in_seconds = 80000,
@@ -89,7 +84,3 @@ Nfeats = FS1
 Nresponse = training_data['dNovN']
 
 Nmodel.fit(Nfeats,Nresponse)
-
-print("\nChosen Equation\n", simplify(Nmodel.sympy()))
-
-print("\nLatex Format\n", latex(simplify(Nmodel.sympy())))

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.interpolate import CubicSpline
-import random
+
 
 
 def cubic_splines(data, xs):
